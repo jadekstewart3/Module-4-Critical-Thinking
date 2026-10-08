@@ -16,9 +16,13 @@ public class Main {
         count++;
       } catch (NumberFormatException e){
           invalidAttempts++;
-          System.out.println("Invalid decimal value, Please try again: ");
+          System.out.println("Invalid value, please enter a decimal: ");
       }
     }
     scnr.close();
+    if (invalidAttempts == maxInvalid){
+      System.out.println("Too many invalid entries. Goodbye");
+      System.exit(1);
+    }
   }
 }
