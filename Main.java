@@ -5,10 +5,20 @@ public class Main {
     float[] values = new float[5];
     int count = 0; 
     int invalidAttempts = 0;
-    int maxInvalid = 10 
+    int maxInvalid = 10 ;
     Scanner scnr = new Scanner(System.in);
 
-    while (count < 5 && invalidAttempts < maxInvalid)
-    userInput = System.out.println("Please enter a decimal value: ");
+    while (count < 5 && invalidAttempts < maxInvalid){
+      System.out.println("Please enter a decimal value: ");
+      String userInput = scnr.nextLine().trim();
+      try{
+        values[count] = Float.parseFloat(userInput);
+        count++;
+      } catch (NumberFormatException e){
+          invalidAttempts++;
+          System.out.println("Invalid decimal value, Please try again: ");
+      }
+    }
+    scnr.close();
   }
 }
