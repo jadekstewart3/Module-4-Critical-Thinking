@@ -1,5 +1,4 @@
 /*
- * Program: Five Value Stats
  * Author: Jade Stewart
  * Date: October 8, 2026
  *
@@ -12,62 +11,73 @@
 import java.util.Scanner;
 
 public class Main {
+  // Named constants for values used throughout the program
+  static final int NUM_VALUES = 5;
+  static final int MAX_INVALID = 5;
+  static final double INTEREST_RATE = 0.20;
+
   public static void main(String[] args) {
     // Array to hold the five values entered by the user
-    float[] values = new float[5];
+    double[] values = new double[NUM_VALUES];
 
     // Number of valid values entered so far
     int count = 0;
 
-    // Endless-loop protection: track invalid entries and set a limit
+    // Endless-loop protection: track invalid entries
     int invalidAttempts = 0;
-    int maxInvalid = 5;
 
     // Variables for the calculated results
-    float total = 0f;
-    float average = 0f;
-    float interest = 0f;
-    double interestPercentage = .20;
+    double total = 0.0;
+    double average = 0.0;
+    double interest = 0.0;
 
     Scanner scnr = new Scanner(System.in);
 
     // Keep asking until five valid values are entered OR the invalid limit
     // is reached. The second condition guarantees the loop always ends.
-    while (count < 5 && invalidAttempts < maxInvalid){
+    while (count < NUM_VALUES && invalidAttempts < MAX_INVALID) {
       System.out.println("Please enter a decimal value: ");
       String userInput = scnr.nextLine().trim();
-      try{
-        // Try to convert the input to a float and store it
-        values[count] = Float.parseFloat(userInput);
-        count++;
-      } catch (NumberFormatException e){
-          // Input was not a valid number: count it and let the loop prompt again
+      try {
+        // Try to convert the input to a double
+        double value = Double.parseDouble(userInput);
+
+        // Reject NaN and Infinity
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
           invalidAttempts++;
           System.out.println("Invalid value.");
+        } else {
+          values[count] = value;
+          count++;
+        }
+      } catch (NumberFormatException e) {
+        // Input was not a valid number: count it and let the loop prompt again
+        invalidAttempts++;
+        System.out.println("Invalid value.");
       }
     }
     scnr.close();
 
     // If the loop ended because of too many invalid entries, exit
     // instead of running calculations on incomplete data
-    if (invalidAttempts == maxInvalid){
+    if (invalidAttempts == MAX_INVALID) {
       System.out.println("Too many invalid entries. Goodbye");
       System.exit(1);
     }
 
     // Start max and min at the first user value
-    float maximum = values[0];
-    float minimum = values[0];
+    double maximum = values[0];
+    double minimum = values[0];
 
     // Add up all values and track the largest and smallest
-    for (float value : values){
+    for (double value : values) {
       total += value;
 
-      if (value > maximum){
+      if (value > maximum) {
         maximum = value;
       }
 
-      if (value < minimum){
+      if (value < minimum) {
         minimum = value;
       }
     }
@@ -75,14 +85,14 @@ public class Main {
     System.out.println("Total: " + total);
 
     // Average of the five values
-    average = total / 5.0f;
+    average = total / NUM_VALUES;
 
     System.out.println("Average: " + average);
     System.out.println("Maximum: " + maximum);
     System.out.println("Minimum: " + minimum);
 
     // Interest on the total at 20%
-    interest = (float) (total * interestPercentage);
+    interest = total * INTEREST_RATE;
 
     System.out.println("Interest: " + interest);
   }
